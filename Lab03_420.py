@@ -50,6 +50,7 @@ data = np.loadtxt("C:\\Users\\Chioma Jesus\\Downloads\\M_data.txt")
 t_data = data[:,0]
 M_data = data[:,1]
 
+#different time windows
 t_break=np.array([0,34,46,72,97,120])
 
 #Display the image
@@ -71,8 +72,9 @@ for k,Mk in enumerate(M):
 
 y = np.log10(N)
 Z =np.vstack([np.ones_like(M),-M]).T
-
+#b = a[1]
 a, residual_t, residual_r, r_squared = multi_regress(y,Z)
+b = a[1]
 print(a, residual_t, residual_r, r_squared)
 
 plt.subplot(2,1,2)
@@ -81,3 +83,21 @@ plt.semilogy(M,10**(Z@a),'r--')
 plt.title(f'G-R model: a={a[0]:0.4f}, b={a[1]:0.4f}, r_sq = {r_squared:0.4f}')
 plt.xlabel('Magnitude , M')
 plt.ylabel('Num. of events, N>=M')
+
+plt.figure(figsize=(11,11))
+for j in range(len(t_break)-1):
+    for k,Mk in enumerate(M):
+        N[k]=np.sum(np.where((M_data>=Mk) & (t_data>= t_break[j]) & (t_data<= t_break[j+1]),1,0))
+    y = np.log10(N)
+    Z =np.vstack([np.ones_like(M),-M]).T
+
+    a, residual_t, residual_r, r_squared = multi_regress(y,Z)
+    plt.subplot(3,2,j+1)
+    plt.semilogy(M,N,'ko')
+    plt.semilogy(M,10**(Z@a),'r--')
+    plt.title(f'a={a[0]:0.4f}, b={a[1]:0.4f}, r_sq = {r_squared:0.4f}')
+    plt.ylim([1,1e4])
+    plt.text(-0.5,5,f'{t_break[j]} <= t <= {t_break[j+1]}')
+   
+    plt.ylabel('Num. of events, N>=M')
+plt.xlabel('Magnitude , M')
