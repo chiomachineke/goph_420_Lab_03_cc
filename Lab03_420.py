@@ -1,3 +1,5 @@
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -43,7 +45,7 @@ def multi_regress(y,Z):
 
 
 
-# Read the TIFF file
+# Read the txt file
 data = np.loadtxt("C:\\Users\\Chioma Jesus\\Downloads\\M_data.txt")
 t_data = data[:,0]
 M_data = data[:,1]
