@@ -103,3 +103,4 @@ for j in range(len(t_break)-1):
    
     plt.ylabel('Num. of events, N>=M')
 plt.xlabel('Magnitude , M')
+plt.show()
