@@ -53,7 +53,7 @@ M_data = data[:,1]
 #different time windows
 t_break=np.array([0,34,46,72,97,120])
 
-#Display the image
+#Display the image and include the time windows
 plt.figure(figsize=(8,11))
 plt.subplot(2,1,1)
 plt.plot(t_data,M_data,'ko',markersize=1)
@@ -66,7 +66,7 @@ N= np.zeros(M.shape)
 #N= np.zeros_like(M)
 
 #print(M_data>=-0.25)
-
+#count the number of occurrence of each magnitude of event
 for k,Mk in enumerate(M):
     N[k]=np.sum(np.where(M_data>=Mk,1,0))
 
@@ -77,6 +77,7 @@ a, residual_t, residual_r, r_squared = multi_regress(y,Z)
 b = a[1]
 print(a, residual_t, residual_r, r_squared)
 
+#plot the total magnitude of events against the number of occurrence and calculate a and b
 plt.subplot(2,1,2)
 plt.semilogy(M,N,'ko')
 plt.semilogy(M,10**(Z@a),'r--')
@@ -84,6 +85,7 @@ plt.title(f'G-R model: a={a[0]:0.4f}, b={a[1]:0.4f}, r_sq = {r_squared:0.4f}')
 plt.xlabel('Magnitude , M')
 plt.ylabel('Num. of events, N>=M')
 
+#plot the total magnitude of events against the number of occurrence within the selected time windows and calculate: a and b
 plt.figure(figsize=(11,11))
 for j in range(len(t_break)-1):
     for k,Mk in enumerate(M):
